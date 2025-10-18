@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ plan.title }} - Partage{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h4 mb-1">{{ plan.title }}</h1>
+                <p class="text-muted">{{ plan.service_date.strftime('%d/%m/%Y') if plan.service_date else 'Date à définir' }}</p>
+                <h2 class="h5 mt-4">Ordre des chants</h2>
+                <ol class="list-group list-group-numbered mb-4">
+                    {% for song in plan.songs %}
+                        <li class="list-group-item">
+                            <strong>{{ song.title }}</strong>
+                            <div class="text-muted">{{ song.author }}{% if song.key_signature %} • {{ song.key_signature }}{% endif %}</div>
+                            {% if song.transition_notes %}<p class="mb-0">{{ song.transition_notes }}</p>{% endif %}
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">Aucun chant prévu.</li>
+                    {% endfor %}
+                </ol>
+                <h2 class="h5">Équipe</h2>
+                <ul class="list-group">
+                    {% for role, label in {'responsable': 'Responsables', 'musicien': 'Musiciens', 'technicien': 'Techniciens'}.items() %}
+                        <li class="list-group-item">
+                            <strong>{{ label }} :</strong> {{ plan.roles[role]|join(', ') if plan.roles[role] else 'À définir' }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if plan.notes %}
+                    <h2 class="h5 mt-4">Notes</h2>
+                    <p>{{ plan.notes|replace('\n', '<br>')|safe }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

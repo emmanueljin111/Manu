@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}{% if song %}Modifier{% else %}Ajouter{% endif %} un chant{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h4 mb-4">{% if song %}Modifier{% else %}Ajouter{% endif %} un chant</h1>
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Titre</label>
+                        <input class="form-control" type="text" id="title" name="title" value="{{ song['title'] if song }}" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="author">Auteur</label>
+                            <input class="form-control" type="text" id="author" name="author" value="{{ song['author'] if song }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="theme">Thème</label>
+                            <input class="form-control" type="text" id="theme" name="theme" value="{{ song['theme'] if song }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="pdf_url">Lien PDF</label>
+                            <input class="form-control" type="url" id="pdf_url" name="pdf_url" value="{{ song['pdf_url'] if song }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="ppt_url">Lien PowerPoint</label>
+                            <input class="form-control" type="url" id="ppt_url" name="ppt_url" value="{{ song['ppt_url'] if song }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" for="chords_url">Lien accords</label>
+                            <input class="form-control" type="url" id="chords_url" name="chords_url" value="{{ song['chords_url'] if song }}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="tags">Mots-clés (séparés par des points-virgules)</label>
+                        <input class="form-control" type="text" id="tags" name="tags" value="{{ song['tags'] if song }}">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a class="btn btn-outline-secondary" href="{{ url_for('main.songs') }}">Retour</a>
+                        <button class="btn btn-primary" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
