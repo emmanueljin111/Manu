@@ -20,7 +20,9 @@ Application web permettant d'organiser et de planifier les temps de louange d'un
 ## Installation
 
 ```bash
+
 python -m venv .venv
+Set-ExecutionPolicy Unrestricted -Scope Process
 source .venv/bin/activate  # sous Windows : .venv\Scripts\activate
 pip install flask werkzeug
 ```
