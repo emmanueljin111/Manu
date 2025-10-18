@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Calendrier{% endblock %}
+{% block content %}
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Planifier un événement</h2>
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Titre</label>
+                        <input class="form-control" type="text" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="event_date">Date</label>
+                        <input class="form-control" type="date" id="event_date" name="event_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="event_type">Type</label>
+                        <select class="form-select" id="event_type" name="event_type" required>
+                            <option value="culte">Culte</option>
+                            <option value="repetition">Répétition</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="plan_id">Associer un plan</label>
+                        <select class="form-select" id="plan_id" name="plan_id">
+                            <option value="">--</option>
+                            {% for plan in plans %}
+                                <option value="{{ plan.id }}">{{ plan.title }} ({{ plan.service_date.strftime('%d/%m/%Y') if plan.service_date else 'N/A' }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="notes">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Agenda à venir</h2>
+                <ul class="list-group">
+                    {% for event in events %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="h6 mb-1">{{ event['title'] }}</h3>
+                                    <span class="badge bg-{{ 'success' if event['event_type'] == 'culte' else 'info' }}">{{ event['event_type']|capitalize }}</span>
+                                    {% if event['plan_title'] %}
+                                        <div class="text-muted">Plan : {{ event['plan_title'] }}</div>
+                                    {% endif %}
+                                    {% if event['notes'] %}
+                                        <div class="small text-muted">{{ event['notes'] }}</div>
+                                    {% endif %}
+                                </div>
+                                <span class="text-muted">{{ event['event_date'] }}</span>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">Aucun événement à afficher.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

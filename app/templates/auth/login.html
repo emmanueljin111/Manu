@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Connexion - Louange Planner{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="h4 mb-4">Connexion</h1>
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nom d'utilisateur</label>
+                        <input type="text" id="username" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Mot de passe</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Se connecter</button>
+                    <p class="text-muted mt-3">Utilisateur par défaut : admin / admin123</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

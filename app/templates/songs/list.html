@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Base de chants - Louange Planner{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4">Base de chants</h1>
+    <a class="btn btn-primary" href="{{ url_for('main.new_song') }}">Ajouter un chant</a>
+</div>
+<form class="row g-2 mb-4" method="get">
+    <div class="col-md-6">
+        <input type="text" class="form-control" name="q" placeholder="Rechercher par titre, auteur ou mot-clé" value="{{ query }}">
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" name="theme">
+            <option value="">Tous les thèmes</option>
+            {% for option in themes %}
+                <option value="{{ option }}" {% if option == selected_theme %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-outline-secondary w-100">Filtrer</button>
+    </div>
+</form>
+<div class="table-responsive">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Thème</th>
+                <th class="text-center">Supports</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for song in songs %}
+                <tr>
+                    <td>
+                        <strong>{{ song['title'] }}</strong><br>
+                        <small class="text-muted">{{ song['tags'] }}</small>
+                    </td>
+                    <td>{{ song['author'] }}</td>
+                    <td>{{ song['theme'] }}</td>
+                    <td class="text-center">
+                        {% if song['pdf_url'] %}<a href="{{ song['pdf_url'] }}" target="_blank" class="btn btn-sm btn-outline-secondary">PDF</a>{% endif %}
+                        {% if song['ppt_url'] %}<a href="{{ song['ppt_url'] }}" target="_blank" class="btn btn-sm btn-outline-secondary">PPT</a>{% endif %}
+                        {% if song['chords_url'] %}<a href="{{ song['chords_url'] }}" target="_blank" class="btn btn-sm btn-outline-secondary">Accords</a>{% endif %}
+                    </td>
+                    <td class="text-end"><a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.edit_song', song_id=song['id']) }}">Modifier</a></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Aucun chant trouvé.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

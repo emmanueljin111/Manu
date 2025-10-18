@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}Nouveau plan{% endblock %}
+{% block content %}
+<h1 class="h4 mb-4">Créer un plan de louange</h1>
+<form method="post" id="plan-form">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label" for="title">Titre</label>
+            <input class="form-control" type="text" id="title" name="title" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label" for="service_date">Date</label>
+            <input class="form-control" type="date" id="service_date" name="service_date" required>
+        </div>
+        <div class="col-md-3 mb-3">
+            <label class="form-label" for="leader_id">Responsable</label>
+            <select class="form-select" id="leader_id" name="leader_id">
+                <option value="">--</option>
+                {% for leader in leaders %}
+                    <option value="{{ leader['id'] }}">{{ leader['display_name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="notes">Notes générales</label>
+        <textarea class="form-control" id="notes" name="notes" rows="3" placeholder="Préparation, transition, ambiance..."></textarea>
+    </div>
+
+    <h2 class="h5 mt-4">Sélection des chants</h2>
+    <div class="table-responsive">
+        <table class="table" id="song-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Chant</th>
+                    <th>Tonalité</th>
+                    <th>Notes de transition</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <button class="btn btn-outline-primary" type="button" id="add-song">Ajouter un chant</button>
+
+    <h2 class="h5 mt-4">Équipe</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <label class="form-label">Responsables</label>
+            <div class="multi-input" data-role="responsable"></div>
+            <button class="btn btn-sm btn-outline-secondary add-person" data-role="responsable" type="button">Ajouter</button>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Musiciens</label>
+            <div class="multi-input" data-role="musicien"></div>
+            <button class="btn btn-sm btn-outline-secondary add-person" data-role="musicien" type="button">Ajouter</button>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Techniciens</label>
+            <div class="multi-input" data-role="technicien"></div>
+            <button class="btn btn-sm btn-outline-secondary add-person" data-role="technicien" type="button">Ajouter</button>
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a class="btn btn-outline-secondary" href="{{ url_for('main.plans') }}">Annuler</a>
+        <button class="btn btn-success" type="submit">Créer le plan</button>
+    </div>
+</form>
+
+<template id="song-row-template">
+    <tr>
+        <td class="order-cell"></td>
+        <td>
+            <select class="form-select" name="song_id">
+                <option value="">-- sélectionner --</option>
+                {% for song in songs %}
+                    <option value="{{ song.id }}">{{ song.title }}{% if song.author %} - {{ song.author }}{% endif %}</option>
+                {% endfor %}
+            </select>
+        </td>
+        <td><input class="form-control" type="text" name="key_signature" placeholder="ex : Sol"></td>
+        <td><input class="form-control" type="text" name="transition_notes" placeholder="Tempo, ambiance..."></td>
+        <td class="text-end"><button class="btn btn-sm btn-outline-danger remove-song" type="button">Supprimer</button></td>
+    </tr>
+</template>
+
+{% include 'plans/_person_template.html' %}
+{% endblock %}
